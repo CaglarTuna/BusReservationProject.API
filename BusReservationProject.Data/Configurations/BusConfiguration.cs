@@ -13,7 +13,6 @@ namespace BusReservationProject.Data.Configurations
         {
             builder.HasKey(x=>x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
-            builder.Property(x => x.Price).IsRequired().HasColumnType("decimal(18,2)");
         }
     }
 }

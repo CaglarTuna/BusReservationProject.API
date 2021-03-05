@@ -36,35 +36,41 @@ namespace BusReservationProject.API.Controllers
         [HttpPost]
         public async Task<IActionResult> BookTicket(TicketDto ticketDto)
         {
+            decimal price = 0;
             var currentUser = _userService.Where(x => x.Email == ticketDto.Email).Result.First();
             var bookedSeat = _seatService.Where(x => x.SeatNumbers == ticketDto.SeatNumbers).Result.First();
             var bookedBus = _busService.Where(x => x.Plate == ticketDto.Plate).Result.First();
+            var dest = _context.Buses.Where(x => x.Plate == ticketDto.Plate).Select(x => x.Destinations.Id).FirstOrDefault();
             var count = _ticketService.Where(x => x.Buses.Id == bookedBus.Id).Result.Count();
 
-            if (_ticketService.Where(x=>x.Buses.Plate==ticketDto.Plate).Result.Any() && _ticketService.Where(x => x.Seats.SeatNumbers == ticketDto.SeatNumbers).Result.Any())
+            if (_ticketService.Where(x => x.Buses.Plate == ticketDto.Plate).Result.Any() && _ticketService.Where(x => x.Seats.SeatNumbers == ticketDto.SeatNumbers).Result.Any())
             {
                 return NotFound("Seat is Taken");
             }
-
-            if ( count ==5 || count == 10 || count == 15 )
+            if (dest == 1)
+                price = 10;
+            else if (dest == 2)
+                price = 20;
+            else
+                price = 30;
+            if ((count >= 5 && count < 10) || (count >= 10 && count < 15) || (count >= 15 && count < 20))
             {
-                bookedBus.Price *= (decimal)1.1;
-                _busService.Update(bookedBus);
+                price *= 1.1m;
             }
-            else if(count == 20)
+            else if (count == 20)
             {
-                bookedBus.Price /= (decimal)Math.Pow(1.1 , 3);
-                _busService.Update(bookedBus);
+                price /= 1.1m;
             }
 
             await _ticketService.AddAsync(new Tickets
             {
+                Price = price,
                 Buses = bookedBus,
                 Seats = bookedSeat,
                 Users = currentUser
             });
 
-            return Created(string.Empty,"ok");
+            return Created(string.Empty, "ok");
         }
     }
 }
