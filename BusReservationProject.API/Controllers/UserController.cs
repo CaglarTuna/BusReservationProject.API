@@ -54,5 +54,17 @@ namespace BusReservationProject.API.Controllers
 
             return BadRequest("error");
         }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            var existingUser = await _userService.Where(x => x.Email == loginDto.Email && x.Password==loginDto.Password);
+
+            if (existingUser.Any())
+            {
+                return Ok("abc");
+            }
+
+            return BadRequest("error");
+        }
     }
 }

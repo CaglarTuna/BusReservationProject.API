@@ -37,7 +37,26 @@ namespace BusReservationProject.WEB.ApiServices
 
             return userDtos;
         }
+        public async Task<LoginDto> Login(LoginDto loginDto)
+        {
+            //IEnumerable<UserDto> userDtos;
 
+            var stringContent = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("user",stringContent);
+
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    userDtos =
+            //        JsonConvert.DeserializeObject<IEnumerable<UserDto>>(await response.Content.ReadAsStringAsync());
+            //}
+            //else
+            //{
+            //    userDtos = null;
+            //}
+
+            return loginDto;
+        }
         public async Task<UserDto> AddAsync(UserDto userDto)
         {
             var stringContent = new StringContent(JsonConvert.SerializeObject(userDto), Encoding.UTF8, "application/json");

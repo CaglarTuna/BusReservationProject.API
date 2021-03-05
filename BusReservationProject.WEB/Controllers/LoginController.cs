@@ -21,7 +21,22 @@ namespace BusReservationProject.WEB.Controllers
             _ticketApiServiceCs = ticketApiServiceCs;
             _mapper = mapper;
         }
-        
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            var response = await _ticketApiServiceCs.Login(loginDto);
+            if (response == null)
+            {
+                return View("Error1");
+            }
+            return RedirectToAction("Index", "Home");
+        }
         public IActionResult Add()
         {
             return View();
