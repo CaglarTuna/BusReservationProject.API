@@ -39,7 +39,7 @@ namespace BusReservationProject.API.Controllers
                              u.Surname,
                              t.Seats.SeatNumbers,
                              b.Destinations.Destination,
-                             b.Price
+                             t.Price
                          };
 
             return Ok(report.ToList());

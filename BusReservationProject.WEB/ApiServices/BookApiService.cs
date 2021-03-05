@@ -23,13 +23,14 @@ namespace BusReservationProject.WEB.ApiServices
 
             var response = await _httpClient.PostAsync("Ticket", stringContent);
 
-            if (response.IsSuccessStatusCode)
-            {
-                ticketDto = JsonConvert.DeserializeObject<TicketDto>(await response.Content.ReadAsStringAsync());
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    ticketDto = JsonConvert.DeserializeObject<TicketDto>(await response.Content.ReadAsStringAsync());
 
-                return ticketDto;
-            }
-            return null;
+            //    return ticketDto;
+            //}
+            //return null;
+            return ticketDto;
         }
     }
 }
